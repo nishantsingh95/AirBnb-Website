@@ -16,6 +16,9 @@ const Payment = () => {
   const [cvv, setCvv] = useState('');
   const [processing, setProcessing] = useState(false);
 
+  // Format helpers
+  const formatINR = (amount) => `₹${Number(amount).toFixed(2)}`;
+
   // Format card number with spaces
   const formatCardNumber = (value) => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
@@ -23,15 +26,10 @@ const Payment = () => {
     const match = (matches && matches[0]) || '';
     const parts = [];
 
-    for (let i = 0, len = match.length; i < len; i += 4) {
+    for (let i = 0; i < match.length; i += 4) {
       parts.push(match.substring(i, i + 4));
     }
-
-    if (parts.length) {
-      return parts.join(' ');
-    } else {
-      return value;
-    }
+    return parts.length ? parts.join(' ') : value;
   };
 
   // Format expiry date
@@ -67,34 +65,27 @@ const Payment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (cardNumber.replace(/\s/g, '').length !== 16) {
       toast.error('Card number must be 16 digits');
       return;
     }
-
     if (!cardName.trim()) {
       toast.error('Cardholder name is required');
       return;
     }
-
     if (expiryDate.replace(/\//g, '').length !== 4) {
       toast.error('Invalid expiry date');
       return;
     }
-
     if (cvv.length !== 3) {
       toast.error('CVV must be 3 digits');
       return;
     }
 
-    // Mock payment processing
     setProcessing(true);
 
-    // Simulate payment delay
     setTimeout(async () => {
       try {
-        // Call the booking API after successful payment
         await handleBooking(cardDetails._id);
         toast.success('Payment successful! Booking confirmed.');
         navigate('/booked');
@@ -114,6 +105,7 @@ const Payment = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-8">
+
           {/* Payment Form */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="flex items-center gap-3 mb-6">
@@ -137,10 +129,10 @@ const Payment = () => {
                     value={cardNumber}
                     onChange={handleCardNumberChange}
                     placeholder="1234 5678 9012 3456"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none transition-colors pl-12"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none pl-12"
                     required
                   />
-                  <FaCreditCard className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <FaCreditCard className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
               </div>
 
@@ -154,12 +146,12 @@ const Payment = () => {
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none"
                   required
                 />
               </div>
 
-              {/* Expiry and CVV */}
+              {/* Expiry & CVV */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -170,7 +162,7 @@ const Payment = () => {
                     value={expiryDate}
                     onChange={handleExpiryChange}
                     placeholder="MM/YY"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none"
                     required
                   />
                 </div>
@@ -183,7 +175,7 @@ const Payment = () => {
                     value={cvv}
                     onChange={handleCvvChange}
                     placeholder="123"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-red-500 focus:outline-none"
                     required
                   />
                 </div>
@@ -193,86 +185,55 @@ const Payment = () => {
               <button
                 type="submit"
                 disabled={processing}
-                className={`w-full py-4 rounded-lg font-semibold text-white text-lg transition-all transform hover:scale-105 ${
+                className={`w-full py-4 rounded-lg font-semibold text-white text-lg transition-all ${
                   processing
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-lg'
+                    : 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600'
                 }`}
               >
-                {processing ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  `Pay $${total}`
-                )}
+                {processing ? 'Processing...' : `Pay ${formatINR(total)}`}
               </button>
             </form>
-
-            <div className="mt-6 flex items-center justify-center gap-4 text-gray-500 text-sm">
-              <FaLock />
-              <span>Your payment information is secure</span>
-            </div>
           </div>
 
           {/* Booking Summary */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Booking Summary</h3>
 
-            {/* Property Image */}
-            <div className="mb-6 rounded-xl overflow-hidden">
-              <img
-                src={cardDetails.image1}
-                alt={cardDetails.title}
-                className="w-full h-64 object-cover"
-              />
-            </div>
+            <img
+              src={cardDetails.image1}
+              alt={cardDetails.title}
+              className="w-full h-64 object-cover rounded-xl mb-6"
+            />
 
-            {/* Property Details */}
-            <div className="space-y-4 mb-6">
-              <h4 className="text-xl font-semibold text-gray-800">{cardDetails.title}</h4>
-              <p className="text-gray-600 flex items-center gap-2">
-                <span className="font-semibold">Location:</span>
-                {cardDetails.city}, {cardDetails.landMark}
-              </p>
-            </div>
+            <h4 className="text-xl font-semibold">{cardDetails.title}</h4>
+            <p className="text-gray-600 mb-4">
+              {cardDetails.city}, {cardDetails.landMark}
+            </p>
 
-            {/* Dates */}
-            <div className="border-t border-gray-200 pt-4 space-y-3">
+            <div className="space-y-3 border-t pt-4">
               <div className="flex justify-between">
-                <span className="text-gray-600">Check-in</span>
-                <span className="font-semibold">{new Date(checkIn).toLocaleDateString()}</span>
+                <span>Check-in</span>
+                <span>{new Date(checkIn).toLocaleDateString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Check-out</span>
-                <span className="font-semibold">{new Date(checkOut).toLocaleDateString()}</span>
+                <span>Check-out</span>
+                <span>{new Date(checkOut).toLocaleDateString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Rent per night</span>
-                <span className="font-semibold">${cardDetails.rent}</span>
+                <span>Rent per night</span>
+                <span>{formatINR(cardDetails.rent)}</span>
               </div>
             </div>
 
-            {/* Total */}
-            <div className="border-t-2 border-gray-300 mt-6 pt-4">
-              <div className="flex justify-between items-center">
-                <span className="text-xl font-bold text-gray-800">Total</span>
-                <span className="text-3xl font-bold text-red-500">${total}</span>
-              </div>
-            </div>
-
-            {/* Cancellation Policy */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <h5 className="font-semibold text-gray-800 mb-2">Cancellation Policy</h5>
-              <p className="text-sm text-gray-600">
-                Free cancellation within 24 hours of booking. After that, cancellation fees may apply.
-              </p>
+            <div className="flex justify-between items-center border-t-2 mt-6 pt-4">
+              <span className="text-xl font-bold">Total</span>
+              <span className="text-3xl font-bold text-red-500">
+                {formatINR(total)}
+              </span>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -18,6 +18,14 @@ const wrapperApp = express();
 // No, just delegation.
 
 // Mount the app.
+// Log incoming requests
+wrapperApp.use((req, res, next) => {
+    console.log("DEBUG: Incoming Request URL:", req.url);
+    console.log("DEBUG: Incoming Request Path:", req.path);
+    next();
+});
+
+// Mount the app.
 wrapperApp.use('/.netlify/functions', app);
 
 // Create the handler from the WRAPPER app.

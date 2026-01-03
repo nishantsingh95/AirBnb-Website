@@ -5,6 +5,11 @@ import { connectDb } from '../config/db.js';
 
 const serverlessHandler = serverless(app);
 
+export const handler = async (event, context) => {
+    await connectDb();
+    return serverlessHandler(event, context);
+};
+
 // We need to wrap the app or use a router to handle the path prefix
 // if the redirect keeps the prefix.
 // However, serverless-http usually adapts.
@@ -12,37 +17,11 @@ const serverlessHandler = serverless(app);
 // Create a wrapper app that mounts the main app at `/.netlify/functions/api`.
 // Note: We need to import express.
 
-const wrapperApp = express();
-
-// Middleware to parse JSON is already in `app`, but we might need it here if we do logic? 
-// No, just delegation.
-
-// Mount the app.
-// Log incoming requests
-wrapperApp.use((req, res, next) => {
-    console.log("DEBUG: Incoming Request URL:", req.url);
-    console.log("DEBUG: Incoming Request Path:", req.path);
-    next();
-});
-
-// Mount the app.
-wrapperApp.use('/.netlify/functions', app);
-
-// Create the handler from the WRAPPER app.
-const handlerWithWrapper = serverless(wrapperApp);
-
-export const handler = async (event, context) => {
-    try {
-        await connectDb();
-        return await handlerWithWrapper(event, context);
-    } catch (error) {
-        console.error("Function execution error:", error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                message: "Internal Server Error",
-                error: error.message
-            })
+statusCode: 500,
+    body: JSON.stringify({
+        message: "Internal Server Error",
+        error: error.message
+    })
         };
     }
 };

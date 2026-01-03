@@ -21,13 +21,20 @@ app.use(cors({
     credentials: true
 }))
 
-app.use("/api/auth", authRouter)
-app.use("/api/user", userRouter)
-app.use("/api/listing", listingRouter)
-app.use("/api/booking", bookingRouter)
-app.use("/api/admin", adminRouter)
+// Create a Main Router to hold all routes
+const mainRouter = express.Router();
 
-app.get("/api/test", (req, res) => {
-    res.json({ message: "Backend is working via Netlify Functions!" })
+mainRouter.use("/auth", authRouter)
+mainRouter.use("/user", userRouter)
+mainRouter.use("/listing", listingRouter)
+mainRouter.use("/booking", bookingRouter)
+mainRouter.use("/admin", adminRouter)
+
+mainRouter.get("/test", (req, res) => {
+    res.json({ message: "Backend is working via Netlify Functions!", path: req.path })
 })
+
+// Mount the Main Router at BOTH /api and / (root) to handle any path stripping behavior
+app.use("/api", mainRouter);
+app.use("/", mainRouter);
 

@@ -18,7 +18,7 @@ const wrapperApp = express();
 // No, just delegation.
 
 // Mount the app.
-wrapperApp.use('/.netlify/functions/api', app);
+wrapperApp.use('/.netlify/functions', app);
 
 // Create the handler from the WRAPPER app.
 const handlerWithWrapper = serverless(wrapperApp);

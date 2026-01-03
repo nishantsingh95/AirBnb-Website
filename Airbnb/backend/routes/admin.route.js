@@ -3,10 +3,10 @@ import { isAuth } from "../middleware/isAuth.js";
 import User from "../model/user.model.js";
 import Booking from "../model/booking.model.js";
 
-const router = express.Router();
+export const adminRouter = express.Router();
 
 // Get all users (admin only)
-router.get("/users", isAuth, async (req, res) => {
+adminRouter.get("/users", isAuth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
@@ -22,7 +22,7 @@ router.get("/users", isAuth, async (req, res) => {
 });
 
 // Get all bookings (admin only)
-router.get("/bookings", isAuth, async (req, res) => {
+adminRouter.get("/bookings", isAuth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
@@ -42,7 +42,7 @@ router.get("/bookings", isAuth, async (req, res) => {
 });
 
 // Delete user (admin only)
-router.delete("/user/:id", isAuth, async (req, res) => {
+adminRouter.delete("/user/:id", isAuth, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
 
@@ -68,5 +68,3 @@ router.delete("/user/:id", isAuth, async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
-export default router;

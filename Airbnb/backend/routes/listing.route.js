@@ -4,7 +4,7 @@ import { isAdmin } from "../middleware/isAdmin.js"
 import { upload } from "../middleware/multer.js"
 import { addListing, deleteListing, findListing, getListing, ratingListing, search, updateListing } from "../controllers/listing.controller.js"
 
-let listingRouter = express.Router()
+export const listingRouter = express.Router()
 
 
 listingRouter.post("/add", isAuth, isAdmin, upload.fields([
@@ -24,5 +24,3 @@ listingRouter.post("/update/:id", isAuth, isAdmin, upload.fields([
     { name: "image2", maxCount: 1 },
     { name: "image3", maxCount: 1 }
 ]), updateListing)
-
-export default listingRouter

@@ -4,9 +4,7 @@ import { isUser } from "../middleware/isUser.js"
 import { cancelBooking, createBooking } from "../controllers/booking.controller.js"
 
 
-let bookingRouter = express.Router()
+export const bookingRouter = express.Router()
 
 bookingRouter.post("/create/:id", isAuth, isUser, createBooking)
 bookingRouter.delete("/cancel/:id", isAuth, isUser, cancelBooking)
-
-export default bookingRouter

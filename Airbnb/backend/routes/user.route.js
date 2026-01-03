@@ -5,7 +5,7 @@ import User from "../model/user.model.js"
 
 
 
-let userRouter = express.Router()
+export const userRouter = express.Router()
 
 userRouter.get("/currentuser", isAuth, getCurrentUser)
 
@@ -50,6 +50,4 @@ userRouter.get("/favorites", isAuth, async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 });
-
-export default userRouter
 

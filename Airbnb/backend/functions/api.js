@@ -1,7 +1,7 @@
 import express from 'express';
 import serverless from 'serverless-http';
 import { app } from '../index.js';
-import connectDb from '../config/db.js';
+import { connectDb } from '../config/db.js';
 
 const serverlessHandler = serverless(app);
 

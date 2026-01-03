@@ -1,5 +1,5 @@
 import express from "express";
-import isAuth from "../middleware/isAuth.js";
+import { isAuth } from "../middleware/isAuth.js";
 import User from "../model/user.model.js";
 import Booking from "../model/booking.model.js";
 

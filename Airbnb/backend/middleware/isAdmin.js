@@ -1,6 +1,6 @@
 import User from "../model/user.model.js"
 
-const isAdmin = async (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
     try {
         const user = await User.findById(req.userId);
         if (!user) {
@@ -14,5 +14,3 @@ const isAdmin = async (req, res, next) => {
         return res.status(500).json({ message: "Authorization check failed" });
     }
 }
-
-export default isAdmin

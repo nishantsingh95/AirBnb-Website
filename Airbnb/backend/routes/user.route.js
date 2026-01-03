@@ -4,9 +4,14 @@ import { getCurrentUser } from "../controllers/user.controller.js"
 import User from "../model/user.model.js"
 
 
+
+console.log("DEBUG: Loading user.route.js");
+console.log("DEBUG: isAuth type:", typeof isAuth);
+console.log("DEBUG: getCurrentUser type:", typeof getCurrentUser);
+
 let userRouter = express.Router()
 
-userRouter.get("/currentuser",isAuth,getCurrentUser)
+userRouter.get("/currentuser", isAuth, getCurrentUser)
 
 // Add to favorites
 userRouter.post("/addfavorite/:listingId", isAuth, async (req, res) => {

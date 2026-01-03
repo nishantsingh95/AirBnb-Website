@@ -1,8 +1,7 @@
 [build]
-  base = "Airbnb"
-  publish = "frontend/dist"
-  command = "cd frontend && npm install && npm run build && cd ../backend && npm install"
-  functions = "backend/functions"
+  publish = "Airbnb/frontend/dist"
+  command = "cd Airbnb/frontend && npm install && npm run build && cd ../backend && npm install"
+  functions = "Airbnb/backend/functions"
 
 [[redirects]]
   from = "/api/*"

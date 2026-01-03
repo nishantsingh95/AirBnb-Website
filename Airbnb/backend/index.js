@@ -14,10 +14,17 @@ let port = process.env.PORT || 6000
 let app = express()
 app.use(express.json())
 app.use(cookieParser())
+app.use(cookieParser())
 app.use(cors({
     origin: ["http://localhost:5173", "http://localhost:5174", "https://stayyhub.netlify.app"],
     credentials: true
 }))
+
+console.log("DEBUG: authRouter type:", typeof authRouter);
+console.log("DEBUG: userRouter type:", typeof userRouter);
+console.log("DEBUG: listingRouter type:", typeof listingRouter);
+console.log("DEBUG: bookingRouter type:", typeof bookingRouter);
+console.log("DEBUG: adminRouter type:", typeof adminRouter);
 
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)

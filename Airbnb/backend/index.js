@@ -21,33 +21,13 @@ app.use(cors({
     credentials: true
 }))
 
-// SUPER DEBUG: Echo the path and die.
-app.use((req, res, next) => {
-    // Only intercept test requests or 404s really, but let's do all for a sec to be sure.
-    // Actually, let's just log and continue, but if it matches /test, return info.
-    if (req.path.includes("test") || req.url.includes("test")) {
-        return res.json({
-            message: "Echo Debug",
-            url: req.url,
-            originalUrl: req.originalUrl,
-            params: req.params,
-            path: req.path,
-            baseUrl: req.baseUrl
-        });
-    }
-    next();
-})
-
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 app.use("/api/listing", listingRouter)
 app.use("/api/booking", bookingRouter)
 app.use("/api/admin", adminRouter)
 
-// Shotgun Test Routes to catch whatever path Netlify passes
-app.get("/api/test", (req, res) => res.json({ status: "OK", path: "matched /api/test", url: req.originalUrl }));
-app.get("/test", (req, res) => res.json({ status: "OK", path: "matched /test (prefix stripped)", url: req.originalUrl }));
-app.get("/.netlify/functions/api/test", (req, res) => res.json({ status: "OK", path: "matched raw path", url: req.originalUrl }));
-
-// Catch-all removed to prevent path-to-regexp crash
+app.get("/api/test", (req, res) => {
+    res.json({ message: "Backend is working via Netlify Functions!" })
+})
 

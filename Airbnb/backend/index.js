@@ -21,6 +21,23 @@ app.use(cors({
     credentials: true
 }))
 
+// SUPER DEBUG: Echo the path and die.
+app.use((req, res, next) => {
+    // Only intercept test requests or 404s really, but let's do all for a sec to be sure.
+    // Actually, let's just log and continue, but if it matches /test, return info.
+    if (req.path.includes("test") || req.url.includes("test")) {
+        return res.json({
+            message: "Echo Debug",
+            url: req.url,
+            originalUrl: req.originalUrl,
+            params: req.params,
+            path: req.path,
+            baseUrl: req.baseUrl
+        });
+    }
+    next();
+})
+
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 app.use("/api/listing", listingRouter)

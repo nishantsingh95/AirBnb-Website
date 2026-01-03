@@ -31,9 +31,5 @@ app.get("/api/test", (req, res) => {
     res.json({ message: "Backend is working via Netlify Functions!", url: req.originalUrl })
 })
 
-// Debug Catch-all
-app.use("*", (req, res) => {
-    console.log("DEBUG: Unmatched Route:", req.originalUrl);
-    res.status(404).json({ message: "Route Not Found", url: req.originalUrl, path: req.path });
-})
+// Catch-all removed to prevent path-to-regexp crash
 

@@ -27,9 +27,10 @@ app.use("/api/listing", listingRouter)
 app.use("/api/booking", bookingRouter)
 app.use("/api/admin", adminRouter)
 
-app.get("/api/test", (req, res) => {
-    res.json({ message: "Backend is working via Netlify Functions!", url: req.originalUrl })
-})
+// Shotgun Test Routes to catch whatever path Netlify passes
+app.get("/api/test", (req, res) => res.json({ status: "OK", path: "matched /api/test", url: req.originalUrl }));
+app.get("/test", (req, res) => res.json({ status: "OK", path: "matched /test (prefix stripped)", url: req.originalUrl }));
+app.get("/.netlify/functions/api/test", (req, res) => res.json({ status: "OK", path: "matched raw path", url: req.originalUrl }));
 
 // Catch-all removed to prevent path-to-regexp crash
 

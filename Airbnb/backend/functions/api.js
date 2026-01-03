@@ -24,6 +24,17 @@ wrapperApp.use('/.netlify/functions/api', app);
 const handlerWithWrapper = serverless(wrapperApp);
 
 export const handler = async (event, context) => {
-    await connectDb();
-    return handlerWithWrapper(event, context);
+    try {
+        await connectDb();
+        return await handlerWithWrapper(event, context);
+    } catch (error) {
+        console.error("Function execution error:", error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: "Internal Server Error",
+                error: error.message
+            })
+        };
+    }
 };

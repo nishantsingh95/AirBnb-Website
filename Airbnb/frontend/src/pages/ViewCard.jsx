@@ -294,34 +294,36 @@ function ViewCard() {
                                 </div>
                                 <div className=' w-[95%] h-[60%] border-[1px] border-[#abaaaa] rounded-lg flex justify-start items-start p-[20px] gap-[15px] flex-col'>
                                     <h1 className='text-[22px] font-semibold'>Booking Price - </h1>
-                                    <p className='w-[100%] flex justify-between items-center px-[20px]'>
-                                        <span className='font-semibold'>
-                                            {`₹${cardDetails.rent} X ${night} nights`}
-                                        </span>
-                                        <span>{cardDetails.rent*night}</span>
-                
-                                    </p>
-                                    <p className='w-[100%] flex justify-between items-center px-[20px]'>
-                                        <span className='font-semibold'>
-                                            Tax
-                                        </span>
-                                        <span>{cardDetails.rent*7/100}</span>
-                
-                                    </p>
-                                    <p className='w-[100%] flex justify-between items-center px-[20px] border-b-[1px] border-gray-500 pb-[10px]'>
-                                        <span className='font-semibold'>
-                                            Airbnb Charge
-                                        </span>
-                                        <span>{cardDetails.rent*7/100}</span>
-                
-                                    </p>
-                                    <p className='w-[100%] flex justify-between items-center px-[20px]'>
-                                        <span className='font-semibold'>
-                                            Total Price
-                                        </span>
-                                        <span>{total}</span>
-                
-                                    </p>
+                                    <p className="w-[100%] flex justify-between items-center px-[20px]">
+  <span className="font-semibold">
+    ₹{Number(cardDetails.rent).toFixed(2)} × {night} nights
+  </span>
+  <span>
+    ₹{Number(cardDetails.rent * night).toFixed(2)}
+  </span>
+</p>
+
+<p className="w-[100%] flex justify-between items-center px-[20px]">
+  <span className="font-semibold">Tax</span>
+  <span>
+    ₹{Number(cardDetails.rent * 7 / 100).toFixed(2)}
+  </span>
+</p>
+
+<p className="w-[100%] flex justify-between items-center px-[20px] border-b-[1px] border-gray-500 pb-[10px]">
+  <span className="font-semibold">Airbnb Charge</span>
+  <span>
+    ₹{Number(cardDetails.rent * 7 / 100).toFixed(2)}
+  </span>
+</p>
+
+<p className="w-[100%] flex justify-between items-center px-[20px]">
+  <span className="font-semibold">Total Price</span>
+  <span>
+    ₹{Number(total).toFixed(2)}
+  </span>
+</p>
+
  
                                 </div>
                                 

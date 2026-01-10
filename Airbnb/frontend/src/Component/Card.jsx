@@ -16,7 +16,7 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
     let { userData } = useContext(userDataContext)
     let { handleViewCard } = useContext(listingDataContext)
     let [popUp, setPopUp] = useState(false)
-    let {cancelBooking}=useContext(bookingDataContext)
+    let { cancelBooking } = useContext(bookingDataContext)
     let { serverUrl } = useContext(authDataContext)
     let [isFavorite, setIsFavorite] = useState(userData?.favorites?.includes(id) || false)
     let [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -85,7 +85,7 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
             {isBooked && host == userData?._id && userData?.role !== 'admin' && (
                 <button
                     className='absolute top-16 left-4 z-30 px-4 py-2 bg-red-500 text-white rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg hover:bg-red-600 transition'
-                    onClick={(e) => {e.stopPropagation(); setPopUp(true)}}
+                    onClick={(e) => { e.stopPropagation(); setPopUp(true) }}
                 >
                     <FcCancel className='w-4 h-4' />
                     Cancel
@@ -113,13 +113,13 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
                         <div className='flex gap-4'>
                             <button
                                 className='flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105'
-                                onClick={(e) => {e.stopPropagation(); cancelBooking(id); setPopUp(false)}}
+                                onClick={(e) => { e.stopPropagation(); cancelBooking(id); setPopUp(false) }}
                             >
                                 Yes, Cancel
                             </button>
                             <button
                                 className='flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition'
-                                onClick={(e) => {e.stopPropagation(); setPopUp(false)}}
+                                onClick={(e) => { e.stopPropagation(); setPopUp(false) }}
                             >
                                 Keep It
                             </button>
@@ -165,12 +165,11 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
                     {images.map((_, index) => (
                         <button
                             key={index}
-                            onClick={(e) => {e.stopPropagation(); setCurrentImageIndex(index)}}
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                                index === currentImageIndex
+                            onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index) }}
+                            className={`h-2 rounded-full transition-all duration-300 ${index === currentImageIndex
                                     ? 'w-8 bg-white shadow-lg'
                                     : 'w-2 bg-white/60 hover:bg-white/80'
-                            }`}
+                                }`}
                         />
                     ))}
                 </div>
@@ -185,7 +184,9 @@ function Card({ title, landMark, image1, image2, image3, rent, city, id, ratings
                         </h3>
                         <div className='flex items-center gap-1 ml-2 bg-gradient-to-r from-yellow-400 to-yellow-500 px-2 py-1 rounded-lg shadow-sm'>
                             <FaStar className='text-white text-sm' />
-                            <span className='text-sm font-bold text-white'>{ratings || 4.5}</span>
+                            <span className='text-sm font-bold text-white'>
+                                {ratings && ratings > 0 ? ratings : (3.8 + (id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 12) / 10).toFixed(1)}
+                            </span>
                         </div>
                     </div>
 

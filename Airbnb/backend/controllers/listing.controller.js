@@ -7,7 +7,7 @@ import { User } from "../model/user.model.js";
 export const addListing = async (req, res) => {
     try {
         let host = req.userId;
-        let { title, description, rent, city, landMark, category, totalQuantity, availableQuantity } = req.body
+        let { title, description, rent, city, landMark, category, totalQuantity, availableQuantity, ratings } = req.body
         let image1 = await uploadOnCloudinary(req.files.image1[0].path)
         let image2 = await uploadOnCloudinary(req.files.image2[0].path)
         let image3 = await uploadOnCloudinary(req.files.image3[0].path)
@@ -24,7 +24,8 @@ export const addListing = async (req, res) => {
             image3,
             host,
             totalQuantity: totalQuantity || 1,
-            availableQuantity: availableQuantity || totalQuantity || 1
+            availableQuantity: availableQuantity || totalQuantity || 1,
+            ratings: ratings || 0
         })
         let user = await User.findByIdAndUpdate(host, { $push: { listing: listing._id } }, { new: true })
 
@@ -68,7 +69,7 @@ export const updateListing = async (req, res) => {
         let image2;
         let image3;
         let { id } = req.params;
-        let { title, description, rent, city, landMark, category, totalQuantity } = req.body
+        let { title, description, rent, city, landMark, category, totalQuantity, ratings } = req.body
         if (req.files.image1) {
             image1 = await uploadOnCloudinary(req.files.image1[0].path)
         }
@@ -90,6 +91,7 @@ export const updateListing = async (req, res) => {
         if (image2) updateData.image2 = image2
         if (image3) updateData.image3 = image3
         if (totalQuantity) updateData.totalQuantity = totalQuantity
+        if (ratings !== undefined) updateData.ratings = ratings
 
         let listing = await Listing.findByIdAndUpdate(id, updateData, { new: true })
 

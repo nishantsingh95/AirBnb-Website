@@ -63,11 +63,17 @@ const UserDashboard = () => {
 
       // Fetch favorites if they exist
       if (userData?.favorites && userData.favorites.length > 0) {
-        const favoritePromises = userData.favorites.map(favId =>
-          axios.get(`${serverUrl}/api/listing/findlistingbyid/${favId}`, { withCredentials: true })
-        );
-        const favoriteResponses = await Promise.all(favoritePromises);
-        setFavorites(favoriteResponses.map(res => res.data.listing));
+        const favoritePromises = userData.favorites.map(async (favId) => {
+          try {
+            const res = await axios.get(`${serverUrl}/api/listing/findlistingbyid/${favId}`, { withCredentials: true });
+            return res.data;
+          } catch (err) {
+            console.error(`Failed to fetch favorite ${favId}:`, err);
+            return null;
+          }
+        });
+        const favoriteData = await Promise.all(favoritePromises);
+        setFavorites(favoriteData.filter(fav => fav !== null));
       } else {
         setFavorites([]);
       }
@@ -148,31 +154,28 @@ const UserDashboard = () => {
           <div className="flex border-b border-gray-200/50 overflow-x-auto">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'overview'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'overview'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab('bookings')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'bookings'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'bookings'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               My Bookings
             </button>
             <button
               onClick={() => setActiveTab('favorites')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'favorites'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'favorites'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Favorites
             </button>

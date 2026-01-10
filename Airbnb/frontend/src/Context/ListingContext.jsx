@@ -83,7 +83,7 @@ function ListingContext({ children }) {
     }
     const handleViewCard = async (id) => {
         try {
-            let result = await axios.get(serverUrl + `/api/listing/findlistingByid/${id}`, { withCredentials: true })
+            let result = await axios.get(serverUrl + `/api/listing/findlistingbyid/${id}`, { withCredentials: true })
             console.log(result.data)
             setCardDetails(result.data)
             navigate("/viewcard")

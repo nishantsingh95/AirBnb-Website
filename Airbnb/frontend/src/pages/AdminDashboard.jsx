@@ -169,7 +169,7 @@ const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-pink-100 text-sm font-medium">Total Revenue</p>
-                <h3 className="text-4xl font-bold mt-2">${stats.revenue}</h3>
+                <h3 className="text-4xl font-bold mt-2">₹{stats.revenue.toFixed(2)}</h3>
               </div>
               <FaChartLine className="text-5xl text-pink-200" />
             </div>
@@ -181,41 +181,37 @@ const AdminDashboard = () => {
           <div className="flex border-b border-gray-200/50 overflow-x-auto">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'overview'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'overview'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Overview
             </button>
             <button
               onClick={() => setActiveTab('users')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'users'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'users'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Users ({allUsers.length})
             </button>
             <button
               onClick={() => setActiveTab('listings')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'listings'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'listings'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Listings ({allListings.length})
             </button>
             <button
               onClick={() => setActiveTab('bookings')}
-              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${
-                activeTab === 'bookings'
+              className={`px-6 py-4 font-semibold transition-all duration-300 whitespace-nowrap ${activeTab === 'bookings'
                   ? 'border-b-3 border-red-500 text-red-500 bg-red-50/50'
                   : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50/50'
-              }`}
+                }`}
             >
               Bookings ({allBookings.length})
             </button>
@@ -230,7 +226,7 @@ const AdminDashboard = () => {
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="p-6 bg-gray-50 rounded-lg">
                   <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-                  <p className="text-gray-600">Total platform revenue: <span className="font-bold text-red-500">${stats.revenue}</span></p>
+                  <p className="text-gray-600">Total platform revenue: <span className="font-bold text-red-500">₹{stats.revenue.toFixed(2)}</span></p>
                   <p className="text-gray-600 mt-2">Active listings: <span className="font-bold">{stats.totalListings}</span></p>
                   <p className="text-gray-600 mt-2">Registered users: <span className="font-bold">{stats.totalUsers}</span></p>
                 </div>
@@ -276,9 +272,8 @@ const AdminDashboard = () => {
                           <td className="px-6 py-4 text-sm text-gray-800">{user.name}</td>
                           <td className="px-6 py-4 text-sm text-gray-600">{user.email}</td>
                           <td className="px-6 py-4 text-sm">
-                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                              user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                              }`}>
                               {user.role || 'user'}
                             </span>
                           </td>
@@ -318,7 +313,7 @@ const AdminDashboard = () => {
                       <div className="p-4">
                         <h3 className="font-semibold text-lg text-gray-800 truncate">{listing.title}</h3>
                         <p className="text-gray-600 text-sm mt-1">{listing.city}, {listing.landMark}</p>
-                        <p className="text-red-500 font-bold mt-2">${listing.rent}/night</p>
+                        <p className="text-red-500 font-bold mt-2">₹{listing.rent.toFixed(2)}/night</p>
                         <div className="flex gap-2 mt-4">
                           <button
                             onClick={() => {
@@ -374,11 +369,10 @@ const AdminDashboard = () => {
                           <td className="px-6 py-4 text-sm text-gray-600">
                             {new Date(booking.checkOut).toLocaleDateString()}
                           </td>
-                          <td className="px-6 py-4 text-sm font-semibold text-gray-800">${booking.totalRent}</td>
+                          <td className="px-6 py-4 text-sm font-semibold text-gray-800">₹{booking.totalRent.toFixed(2)}</td>
                           <td className="px-6 py-4 text-sm">
-                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                              booking.status === 'booked' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                            }`}>
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${booking.status === 'booked' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                              }`}>
                               {booking.status}
                             </span>
                           </td>

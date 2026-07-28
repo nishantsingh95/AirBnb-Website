@@ -39,8 +39,8 @@ function Login() {
             } catch (error) {
                 setLoading(false)
                 console.log(error)
-                toast.error(error.response.data.message)
-
+                const errMsg = error.response?.data?.message || error.message || "Login failed"
+                toast.error(errMsg)
             }
             
         }
